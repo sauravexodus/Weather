@@ -2,9 +2,9 @@ package com.exodus.weather.dagger;
 
 
 import android.app.Application;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.exodus.weather.KeyStore;
 import com.exodus.weather.store.DaoMaster;
 import com.exodus.weather.store.DaoSession;
 
@@ -20,13 +20,13 @@ public class ObjectModule {
 
     DaoSession daoSession;
     SQLiteDatabase db;
-    SharedPreferences keyStore;
+    KeyStore keyStore;
 
     public ObjectModule(Application application) {
         DaoMaster.DevOpenHelper dbHelper = new DaoMaster.DevOpenHelper(application
                 , "dogether-db", null);
         db = dbHelper.getWritableDatabase();
-        keyStore = application.getSharedPreferences("KEY_STORE", 0);
+        keyStore = new KeyStore(application);
         daoSession = new DaoMaster(db).newSession();
     }
 
@@ -44,7 +44,7 @@ public class ObjectModule {
 
     @Provides
     @Singleton
-    SharedPreferences provideKeyStore() {
+    KeyStore provideKeyStore() {
         return keyStore;
     }
 

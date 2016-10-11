@@ -1,13 +1,13 @@
 package com.exodus.weather;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.exodus.weather.store.ListCity;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
     @Inject
     AsyncSession asyncSession;
     @Inject
-    SharedPreferences keystore;
+    KeyStore keystore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
         ButterKnife.bind(this);
         ((MyApplication) getApplication()).getObjectsComponent().inject(this);
 
-        asyncSession.setListener(this);
+        asyncSession.setListenerMainThread(this);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/BebasNeueBook.otf")
@@ -57,17 +57,15 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
                 .build()
         );
 
-        SharedPreferences sharedPreferences = getSharedPreferences("KEY_STORE", 0);
+        if (!keystore.isCityListParsed()) {
+            new ParseCityTask().execute();
+        } else {
+            InitializeViews();
+        }
 
     }
 
     private void InitializeViews() {
-        myFragments.add(new CityFragment());
-        myFragments.add(new CityFragment());
-        myFragments.add(new CityFragment());
-        myFragments.add(new CityFragment());
-        myFragments.add(new CityFragment());
-        myFragments.add(new CityFragment());
         myFragments.add(new CityFragment());
         myFragments.add(new CityFragment());
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(myFragments);
@@ -99,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
     @Override
     public void onAsyncOperationCompleted(AsyncOperation operation) {
         InitializeViews();
+        keystore.setCityListParsed(true);
     }
 
     public class ParseCityTask extends AsyncTask<Void, Integer, Void> {
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
 
         @Override
         protected Void doInBackground(Void... params) {
-            String json = null;
+            String json;
             try {
                 InputStream is = getAssets().open("city.list.json");
                 int size = is.available();
@@ -130,6 +129,11 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
                 ex.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            Log.d("City_LIST_PARSING", values[0] + "");
         }
 
         @Override
