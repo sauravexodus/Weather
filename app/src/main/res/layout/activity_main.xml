@@ -22,7 +22,7 @@
         android:layout_height="72dp"
         android:layout_alignParentBottom="true"
         android:indeterminate="false"
-        android:visibility="visible"
+        android:visibility="gone"
         android:max="100"
         android:progress="10"
         android:progressDrawable="@drawable/progress_drawable"

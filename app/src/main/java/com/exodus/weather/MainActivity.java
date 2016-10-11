@@ -12,6 +12,10 @@ import android.widget.ProgressBar;
 
 import com.exodus.weather.fragments.CityFragment;
 import com.exodus.weather.fragments.CitySearchDialog;
+import com.exodus.weather.interfaces.OnCitySelectedListener;
+import com.exodus.weather.store.City;
+import com.exodus.weather.store.DaoSession;
+import com.exodus.weather.store.KeyStore;
 import com.exodus.weather.store.ListCity;
 
 import org.greenrobot.greendao.async.AsyncOperation;
@@ -24,6 +28,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -33,7 +38,7 @@ import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements AsyncOperationListener {
+public class MainActivity extends AppCompatActivity implements AsyncOperationListener, OnCitySelectedListener {
 
     @BindView(R.id.dashboard_viewpager)
     ViewPager viewPager;
@@ -44,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
 
     @Inject
     AsyncSession asyncSession;
+    @Inject
+    DaoSession daoSession;
     @Inject
     KeyStore keystore;
 
@@ -68,33 +75,25 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
             new ParseCityTask().execute();
         }
 
+        initializePreviousCities();
         InitializeViews();
 
     }
 
-    private void InitializeViews() {
+    void initializePreviousCities() {
         myFragments.add(new CityFragment());
-        myFragments.add(new CityFragment());
-        MyPagerAdapter pagerAdapter = new MyPagerAdapter(myFragments);
+        List<City> cities = daoSession.getCityDao().loadAll();
+        for (City city : cities) {
+            CityFragment cityFragment = new CityFragment();
+            cityFragment.cityId = city.getId();
+            myFragments.add(cityFragment);
+        }
+    }
 
+    private void InitializeViews() {
+        MyPagerAdapter pagerAdapter = new MyPagerAdapter(myFragments);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(10);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     @Override
@@ -112,9 +111,20 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
     void addCity() {
         if (keystore.isCityListParsed()) {
             CitySearchDialog citySearchDialog = new CitySearchDialog();
+            citySearchDialog.setOnCitySelectedListener(this);
             citySearchDialog.show(getSupportFragmentManager(), "CHOOSE_CITY_DIALOG");
         }
     }
+
+    @Override
+    public void onCitySelected(long cityId) {
+        CityFragment cityFragment = new CityFragment();
+        cityFragment.cityId = cityId;
+        myFragments.add(cityFragment);
+        InitializeViews();
+        viewPager.setCurrentItem(myFragments.size() - 1);
+    }
+
     public class ParseCityTask extends AsyncTask<Void, Integer, Void> {
         ArrayList<ListCity> cityList = new ArrayList<>();
 
@@ -149,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            progressBar.setProgress(values[0]);
+            //progressBar.setProgress(values[0]);
         }
 
         @Override

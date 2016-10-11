@@ -2,22 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     android:orientation="vertical">
 
     <EditText
         android:id="@+id/city_list_dialog_search"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:padding="16dp"
         android:hint="Search"
-        android:elevation="2dp" />
+        android:singleLine="true"
+        android:maxLines="1"
+        android:textCursorDrawable="@drawable/cursor_drawable"
+        android:padding="16dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#CCC" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/city_list_dialog_recycler_view"
         android:layout_width="match_parent"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:layout_height="match_parent" />
+        android:paddingBottom="16dp" />
+
 
 </LinearLayout>

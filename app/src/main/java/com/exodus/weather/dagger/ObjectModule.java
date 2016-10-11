@@ -4,9 +4,9 @@ package com.exodus.weather.dagger;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.exodus.weather.KeyStore;
 import com.exodus.weather.store.DaoMaster;
 import com.exodus.weather.store.DaoSession;
+import com.exodus.weather.store.KeyStore;
 
 import org.greenrobot.greendao.async.AsyncSession;
 

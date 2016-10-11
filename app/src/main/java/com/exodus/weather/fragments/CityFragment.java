@@ -88,11 +88,13 @@ public class CityFragment extends Fragment implements AsyncOperationListener {
     AsyncSession asyncSession;
 
     City city;
-    private long cityId = 524901L;
+    public long cityId = 524901L;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null)
+            cityId = savedInstanceState.getLong("city_id");
         return inflater.inflate(R.layout.fragment_city, container, false);
     }
 
@@ -203,6 +205,11 @@ public class CityFragment extends Fragment implements AsyncOperationListener {
         unbinder.unbind();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong("city_id", cityId);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void onAsyncOperationCompleted(AsyncOperation operation) {

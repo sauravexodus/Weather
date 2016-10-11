@@ -1,4 +1,4 @@
-package com.exodus.weather;
+package com.exodus.weather.store;
 
 
 import android.app.Application;

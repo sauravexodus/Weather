@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.exodus.weather.MyApplication;
 import com.exodus.weather.R;
+import com.exodus.weather.interfaces.OnCitySelectedListener;
 import com.exodus.weather.store.DaoSession;
 import com.exodus.weather.store.ListCity;
 import com.exodus.weather.store.ListCityDao;
@@ -29,9 +30,14 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.ViewHo
     DaoSession daoSession;
 
     List<ListCity> cities = new ArrayList<>();
+    private OnCitySelectedListener listener;
 
     public CityListAdapter(Activity appCompatActivity) {
         ((MyApplication) appCompatActivity.getApplication()).getObjectsComponent().inject(this);
+    }
+
+    public void setCitySelectListener(OnCitySelectedListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -44,22 +50,22 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.ViewHo
         cities.clear();
         notifyItemRangeRemoved(0, previousSize - 1);
         cities = daoSession.getListCityDao().queryBuilder().where(ListCityDao
-                .Properties.Name.like(s.toLowerCase())).limit(30).list();
+                .Properties.Name.like("%" + s.toLowerCase() + "%")).limit(30).list();
         notifyItemRangeInserted(0, cities.size() - 1);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ListCity listCity = cities.get(holder.getAdapterPosition());
-        holder.cityName.setText(listCity.getName());
+        holder.cityName.setText(listCity.getName() + ", " + listCity.getCountry());
     }
 
     @Override
     public int getItemCount() {
-        return cities.size() + 1;
+        return cities.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @Nullable
         @BindView(R.id.city_list_item_city_name)
         TextView cityName;
@@ -67,6 +73,14 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            cityName.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            listener.onCitySelected(cities.get(getAdapterPosition()).getId());
         }
     }
 }
