@@ -1,8 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
 
+    <RelativeLayout
+        android:id="@+id/current_weather_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="16dp"
+        android:padding="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/card_upper_bg">
+
+        <TextView
+            android:id="@+id/weather_city_name"
+            fontPath="fonts/BebasNeueBold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mumbai"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="32dp" />
+
+        <LinearLayout
+            android:id="@+id/weather_temp_trend_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/weather_city_name"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/weather_city_name"
+            android:gravity="center_vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/weather_max_temp"
+                fontPath="fonts/BebasNeueBook.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:drawableLeft="@drawable/arrow_inverted"
+                android:drawablePadding="4dp"
+                android:text="25°"
+                android:textColor="@color/colorAccent"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/weather_min_temp"
+                fontPath="fonts/BebasNeueBook.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/arrow"
+                android:drawablePadding="4dp"
+                android:text="42°"
+                android:textColor="@color/colorAccent"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/weather_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/weather_city_name"
+            android:text="Monday"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/weather_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/weather_day"
+            android:text="00/12/2016"
+            android:textColor="@color/colorAccent"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/weather_wind_speed"
+            fontPath="fonts/BebasNeueLight.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/weather_date"
+            android:layout_marginTop="4dp"
+            android:text="Wind 6km/hr"
+            android:textColor="@color/colorAccent"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/weather_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/weather_city_name"
+            android:layout_marginLeft="32dp"
+            android:layout_toEndOf="@+id/weather_day"
+            android:layout_toRightOf="@+id/weather_day"
+            android:src="@drawable/weather_1" />
+
+        <TextView
+            android:id="@+id/weather_name_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/weather_image"
+            android:layout_alignRight="@id/weather_image"
+            android:layout_below="@id/weather_image"
+            android:layout_marginTop="4dp"
+            android:gravity="center_horizontal"
+            android:text="PARTLY CLOUDY"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/weather_current_temp"
+            fontPath="fonts/BebasNeueBold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/weather_image"
+            android:layout_alignTop="@id/weather_image"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/weather_image"
+            android:gravity="center"
+            android:text="44°"
+            android:textColor="@color/colorAccent"
+            android:textSize="70dp" />
+
+        <TextView
+            android:id="@+id/weather_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/weather_day"
+            android:layout_alignStart="@+id/weather_day"
+            android:layout_below="@id/weather_wind_speed"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/humidity_icon"
+            android:drawablePadding="4dp"
+            android:text="30%"
+            android:textColor="@color/colorAccent"
+            android:textSize="16dp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/other_weather_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:layout_below="@id/current_weather_layout"
+        android:background="@drawable/card_upper_bg">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/other_weather_layout_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

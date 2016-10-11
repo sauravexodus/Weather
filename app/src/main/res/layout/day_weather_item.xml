@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        android:id="@+id/other_items_weather_day"
+        fontPath="fonts/BebasNeueBook.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sun"
+        android:textColor="@color/colorAccent"
+        android:textSize="24dp" />
+
+    <ImageView
+        android:id="@+id/other_items_weather_image"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/weather_2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25°"
+        android:textColor="@color/colorAccent"
+        android:textSize="24dp" />
+</LinearLayout>
