@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.exodus.weather.MyApplication;
 import com.exodus.weather.R;
+import com.exodus.weather.Utils;
 import com.exodus.weather.store.DaoSession;
 import com.exodus.weather.store.FutureWeather;
 
@@ -50,6 +51,7 @@ public class OtherWeatherAdapter extends RecyclerView.Adapter<OtherWeatherAdapte
         FutureWeather futureWeather = futureWeathers.get(holder.getAdapterPosition());
         holder.day.setText(new DateTime(futureWeather.getDate()).toString("EEE"));
         holder.temperature.setText(futureWeather.getTemp() + "°");
+        holder.weatherImage.setImageResource(Utils.getCityImageDrawable(futureWeather.getWeather_icon()));
     }
 
     @Override

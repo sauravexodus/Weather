@@ -122,6 +122,7 @@ public class CityFragment extends Fragment implements AsyncOperationListener {
         humidity.setText(city.getHumidity() + "%");
         windSpeed.setText("Wind " + city.getWind_speed() + "km/hr");
         weatherType.setText(city.getWeather_text());
+        weatherIcon.setImageResource(Utils.getCityImageDrawable(city.getWeather_icon()));
 
         initializeRecyclerView();
 
@@ -178,6 +179,7 @@ public class CityFragment extends Fragment implements AsyncOperationListener {
         city.setTemp_max(currentWeatherObject.getJSONObject("temp").getInt("max"));
         city.setTemp_min(currentWeatherObject.getJSONObject("temp").getInt("min"));
         city.setWeather_text(currentWeatherObject.getJSONArray("weather").getJSONObject(0).getString("main"));
+        city.setWeather_icon(currentWeatherObject.getJSONArray("weather").getJSONObject(0).getInt("id"));
         city.setUpdated_at(new Date(currentWeatherObject.getLong("dt") * 1000));
         city.setWind_speed(currentWeatherObject.getInt("speed"));
 
@@ -192,6 +194,7 @@ public class CityFragment extends Fragment implements AsyncOperationListener {
             futureWeather.setDate(new Date(weatherObject.getLong("dt") * 1000));
             futureWeather.setCity(city);
             futureWeather.setCity_id(city.getId());
+            futureWeather.setWeather_icon(weatherObject.getJSONArray("weather").getJSONObject(0).getInt("id"));
             futureWeather.setTemp(weatherObject.getJSONObject("temp").getInt("day"));
             newFutureWeather.add(futureWeather);
         }

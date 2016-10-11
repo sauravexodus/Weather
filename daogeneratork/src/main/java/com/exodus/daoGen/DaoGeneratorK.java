@@ -26,11 +26,11 @@ public class DaoGeneratorK {
         city.addIntProperty("wind_speed");
         city.addIntProperty("humidity");
         city.addStringProperty("weather_text");
-        city.addStringProperty("weather_icon");
+        city.addIntProperty("weather_icon");
 
         Entity futureWeather = schema.addEntity("FutureWeather");
         futureWeather.addIdProperty();
-        futureWeather.addStringProperty("weather_icon");
+        futureWeather.addIntProperty("weather_icon");
         futureWeather.addDateProperty("date");
         futureWeather.addIntProperty("temp");
 
