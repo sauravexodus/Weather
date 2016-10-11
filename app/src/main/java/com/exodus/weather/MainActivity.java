@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
         );
 
         if (!keystore.isCityListParsed()) {
+            myFragments.add(new CityFragment());
             progressBar.setVisibility(View.VISIBLE);
             new ParseCityTask().execute();
         }
@@ -81,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
     }
 
     void initializePreviousCities() {
-        myFragments.add(new CityFragment());
         List<City> cities = daoSession.getCityDao().loadAll();
         for (City city : cities) {
             CityFragment cityFragment = new CityFragment();
