@@ -109,7 +109,7 @@ public class CitySearchDialog extends DialogFragment implements OnCitySelectedLi
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         cityListAdapter = new CityListAdapter(getActivity());
         cityListAdapter.setCitySelectListener(this);
-        cityListAdapter.reQuery("");
+        cityListAdapter.reQuery("New York");
         recyclerView.setAdapter(cityListAdapter);
         cityListAdapter.notifyDataSetChanged();
 
