@@ -7,8 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
+import com.exodus.weather.fragments.CityFragment;
+import com.exodus.weather.fragments.CitySearchDialog;
 import com.exodus.weather.store.ListCity;
 
 import org.greenrobot.greendao.async.AsyncOperation;
@@ -26,6 +29,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
 
     @BindView(R.id.dashboard_viewpager)
     ViewPager viewPager;
+    @BindView(R.id.city_list_parse_progress_bar)
+    ProgressBar progressBar;
 
     ArrayList<Fragment> myFragments = new ArrayList<>();
 
@@ -58,10 +64,11 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
         );
 
         if (!keystore.isCityListParsed()) {
+            progressBar.setVisibility(View.VISIBLE);
             new ParseCityTask().execute();
-        } else {
-            InitializeViews();
         }
+
+        InitializeViews();
 
     }
 
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(myFragments);
 
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(10);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -96,10 +104,17 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
 
     @Override
     public void onAsyncOperationCompleted(AsyncOperation operation) {
-        InitializeViews();
         keystore.setCityListParsed(true);
+        progressBar.setVisibility(View.GONE);
     }
 
+    @OnClick(R.id.add_city_fab)
+    void addCity() {
+        if (keystore.isCityListParsed()) {
+            CitySearchDialog citySearchDialog = new CitySearchDialog();
+            citySearchDialog.show(getSupportFragmentManager(), "CHOOSE_CITY_DIALOG");
+        }
+    }
     public class ParseCityTask extends AsyncTask<Void, Integer, Void> {
         ArrayList<ListCity> cityList = new ArrayList<>();
 
@@ -116,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
 
                 JSONArray jsonArray = new JSONArray(json);
                 for (int i = 0; i < jsonArray.length(); i++) {
+                    publishProgress(i / jsonArray.length() * 100);
                     JSONObject cityObject = jsonArray.getJSONObject(i);
                     ListCity listCity = new ListCity(cityObject.getLong("_id"));
                     listCity.setCountry(cityObject.getString("country"));
@@ -133,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            Log.d("City_LIST_PARSING", values[0] + "");
+            progressBar.setProgress(values[0]);
         }
 
         @Override

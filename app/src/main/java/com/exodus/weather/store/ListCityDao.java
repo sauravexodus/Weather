@@ -41,16 +41,14 @@ public class ListCityDao extends AbstractDao<ListCity, Long> {
      * Creates the underlying database table.
      */
     public static void createTable(Database db, boolean ifNotExists) {
-        String constraint = ifNotExists ? "IF NOT EXISTS " : "";
+        String constraint = ifNotExists ? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"LIST_CITY\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"NAME\" TEXT," + // 1: name
                 "\"COUNTRY\" TEXT);"); // 2: country
     }
 
-    /**
-     * Drops the underlying database table.
-     */
+    /** Drops the underlying database table. */
     public static void dropTable(Database db, boolean ifExists) {
         String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "\"LIST_CITY\"";
         db.execSQL(sql);
@@ -59,17 +57,17 @@ public class ListCityDao extends AbstractDao<ListCity, Long> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, ListCity entity) {
         stmt.clearBindings();
-
+ 
         Long id = entity.getId();
         if (id != null) {
             stmt.bindLong(1, id);
         }
-
+ 
         String name = entity.getName();
         if (name != null) {
             stmt.bindString(2, name);
         }
-
+ 
         String country = entity.getCountry();
         if (country != null) {
             stmt.bindString(3, country);
@@ -79,17 +77,17 @@ public class ListCityDao extends AbstractDao<ListCity, Long> {
     @Override
     protected final void bindValues(SQLiteStatement stmt, ListCity entity) {
         stmt.clearBindings();
-
+ 
         Long id = entity.getId();
         if (id != null) {
             stmt.bindLong(1, id);
         }
-
+ 
         String name = entity.getName();
         if (name != null) {
             stmt.bindString(2, name);
         }
-
+ 
         String country = entity.getCountry();
         if (country != null) {
             stmt.bindString(3, country);
@@ -99,7 +97,7 @@ public class ListCityDao extends AbstractDao<ListCity, Long> {
     @Override
     public Long readKey(Cursor cursor, int offset) {
         return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
-    }
+    }    
 
     @Override
     public ListCity readEntity(Cursor cursor, int offset) {
@@ -110,20 +108,20 @@ public class ListCityDao extends AbstractDao<ListCity, Long> {
         );
         return entity;
     }
-
+     
     @Override
     public void readEntity(Cursor cursor, ListCity entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setCountry(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-    }
-
+     }
+    
     @Override
     protected final Long updateKeyAfterInsert(ListCity entity, long rowId) {
         entity.setId(rowId);
         return rowId;
     }
-
+    
     @Override
     public Long getKey(ListCity entity) {
         if (entity != null) {
@@ -142,5 +140,5 @@ public class ListCityDao extends AbstractDao<ListCity, Long> {
     protected final boolean isEntityUpdateable() {
         return true;
     }
-
+    
 }

@@ -38,7 +38,7 @@
             android:padding="8dp">
 
             <TextView
-                android:id="@+id/weather_max_temp"
+                android:id="@+id/weather_min_temp"
                 fontPath="fonts/BebasNeueBook.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/weather_min_temp"
+                android:id="@+id/weather_max_temp"
                 fontPath="fonts/BebasNeueBook.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
 
         <TextView
             android:id="@+id/weather_wind_speed"
-            fontPath="fonts/BebasNeueLight.ttf"
+            fontPath="fonts/BebasNeueLight.otf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/weather_date"
@@ -162,6 +162,14 @@
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/weather_loading_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="140dp"
+        android:indeterminate="true"
+        android:background="@drawable/gradient" />
 
 
 </RelativeLayout>
