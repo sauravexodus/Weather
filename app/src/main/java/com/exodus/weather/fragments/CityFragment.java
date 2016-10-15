@@ -88,6 +88,7 @@ public class CityFragment extends Fragment implements AsyncOperationListener {
     AsyncSession asyncSession;
 
     City city;
+    OtherWeatherAdapter adapter;
     public long cityId = 524901L;
 
     @Nullable
@@ -130,8 +131,9 @@ public class CityFragment extends Fragment implements AsyncOperationListener {
     }
 
     public void initializeRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        OtherWeatherAdapter adapter = new OtherWeatherAdapter(getActivity(), cityId);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()
+                , LinearLayoutManager.HORIZONTAL, false));
+        adapter = new OtherWeatherAdapter(getActivity(), cityId);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -206,6 +208,11 @@ public class CityFragment extends Fragment implements AsyncOperationListener {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

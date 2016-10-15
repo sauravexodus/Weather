@@ -21,12 +21,13 @@ import com.exodus.weather.store.ListCity;
 import org.greenrobot.greendao.async.AsyncOperation;
 import org.greenrobot.greendao.async.AsyncOperationListener;
 import org.greenrobot.greendao.async.AsyncSession;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,25 +131,22 @@ public class MainActivity extends AppCompatActivity implements AsyncOperationLis
 
         @Override
         protected Void doInBackground(Void... params) {
-            String json;
             try {
-                InputStream is = getAssets().open("city.list.json");
-                int size = is.available();
-                byte[] buffer = new byte[size];
-                is.read(buffer);
-                is.close();
-                json = new String(buffer, "UTF-8");
+                InputStream is = getAssets().open("city.list_2.json");
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-                JSONArray jsonArray = new JSONArray(json);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    publishProgress(i / jsonArray.length() * 100);
-                    JSONObject cityObject = jsonArray.getJSONObject(i);
+                String strLine;
+
+                //Read File Line By Line
+                while ((strLine = br.readLine()) != null) {
+                    JSONObject cityObject = new JSONObject(strLine);
                     ListCity listCity = new ListCity(cityObject.getLong("_id"));
                     listCity.setCountry(cityObject.getString("country"));
                     listCity.setName(cityObject.getString("name"));
-
                     cityList.add(listCity);
                 }
+
+                br.close();
 
 
             } catch (IOException | JSONException ex) {
