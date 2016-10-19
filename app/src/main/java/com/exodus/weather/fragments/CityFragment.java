@@ -163,6 +163,7 @@ public class CityFragment extends Fragment implements AsyncOperationListener {
         new RxVolley.Builder().url(Utils.OPEN_WEATHER_URL)
                 .callback(httpCallback)
                 .contentType(RxVolley.ContentType.JSON)
+                .shouldCache(false)
                 .params(httpParams)
                 .doTask();
 
